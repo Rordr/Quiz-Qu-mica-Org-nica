@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz 2 - Química Orgânica Avançada</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f5f7fa;
+            line-height: 1.6;
+        }
+        .quiz-container {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .question-container {
+            margin-bottom: 25px;
+        }
+        .structure-image {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+        }
+        .structure-image img {
+            max-width: 100%;
+            height: auto;
+            max-height: 250px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .option {
+            margin: 10px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+        .option:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .selected {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+        .correct {
+            background: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724;
+        }
+        .incorrect {
+            background: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24;
+        }
+        .button {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .button:hover {
+            background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .button-restart {
+            background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+        }
+        .button-restart:hover {
+            background: linear-gradient(135deg, #96c93d 0%, #00b09b 100%);
+        }
+        .results {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #ecf0f1 0%, #bdc3c7 100%);
+            border-radius: 10px;
+        }
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        .progress-bar {
+            flex-grow: 1;
+            height: 10px;
+            background: #bdc3c7;
+            border-radius: 5px;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #6a11cb;
+        }
+        .score-display {
+            font-size: 24px;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .fun-fact {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #9b59b6;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .option-number {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        #welcomeScreen, #quizScreen, #resultsScreen {
+            display: block;
+        }
+        .counter {
+            font-size: 14px;
+            color: #7f8c8d;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .quiz-title {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .difficulty-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <!-- Tela de Boas-vindas -->
+        <div id="welcomeScreen">
+            <h1 class="quiz-title">Quiz Avançado de Química Orgânica</h1>
+            <p class="subtitle">Identifique funções orgânicas e nomenclatura IUPAC de 30 compostos complexos</p>
+            
+            <div class="structure-image">
+                <img src="imagens_quiz2/quiz2-composto1.png" alt="Exemplo de estrutura química" onerror="this.style.display='none'">
+                <p><small>Exemplo de estrutura química complexa deste quiz</small></p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <p>Este quiz avançado contém <span id="totalQuestions">30</span> compostos com 2 perguntas cada:</p>
+                <ul style="text-align: left; display: inline-block; margin: 15px 0;">
+                    <li>Identificação da função orgânica</li>
+                    <li>Nome IUPAC do composto</li>
+                </ul>
+                <br>
+                <div style="margin: 20px 0;">
+                    <span class="difficulty-badge" style="background: #ff6b6b;">Avançado</span>
+                    <span class="difficulty-badge" style="background: #4ecdc4;">30 Compostos</span>
+                    <span class="difficulty-badge" style="background: #45b7d1;">60 Perguntas</span>
+                </div>
+                <br>
+                <button class="button" onclick="startQuiz()">Iniciar Quiz Avançado</button>
+            </div>
+        </div>
+
+        <!-- Tela do Quiz -->
+        <div id="quizScreen" class="hidden">
+            <div class="question-container">
+                <div class="counter" id="counter">Pergunta 1 de 60</div>
+                <div class="structure-image" id="structureContainer">
+                    <!-- Imagem da estrutura será inserida aqui -->
+                </div>
+                
+                <div class="question-text" id="questionText"></div>
+                
+                <div id="optionsContainer"></div>
+                
+                <div id="feedback" class="feedback hidden"></div>
+                <div id="explanation" class="explanation hidden"></div>
+                <div id="funFact" class="fun-fact hidden"></div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="button" id="prevButton" onclick="prevQuestion()" disabled>Anterior</button>
+                <button class="button" id="nextButton" onclick="nextQuestion()">Próxima</button>
+                <button class="button" id="submitButton" onclick="submitQuiz()" style="display:none">Finalizar Quiz</button>
+            </div>
+            
+            <div class="progress-container">
+                <div>Progresso: <span id="progressText">1/60</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div>Pontuação: <span class="score-display" id="score">0</span></div>
+            </div>
+        </div>
+
+        <!-- Tela de Resultados -->
+        <div id="resultsScreen" class="hidden">
+            <h1>Resultado Final - Quiz Avançado</h1>
+            <div class="results" id="finalScore"></div>
+            
+            <div id="detailedResults" style="margin: 30px 0;">
+                <!-- Resultados detalhados serão inseridos aqui -->
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="button button-restart" onclick="restartQuiz()">Refazer Quiz</button>
+                <button class="button" onclick="showAnswers()">Ver Respostas Corretas</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados do quiz - 30 compostos com 2 perguntas cada
+        const perguntas = [
+            // Composto 1: Metoxietano
+            {
+                imagem: "imagens_quiz2/quiz2-composto1.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Éter", "Álcool", "Aldeído", "Cetona"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto é um éter assimétrico, com um grupo metoxi e um grupo etil."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Metoxietano", "Etoximetano", "Metoximetano", "Etoxietano"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Metoxietano (grupo metoxi ligado a grupo etil)."
+                },
+                curiosidade: "O xx é um éter volátil usado como solvente em reações orgânicas."
+            },
+            // Composto 2: Isopropanol
+            {
+                imagem: "imagens_quiz2/quiz2-composto2.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Álcool", "Aldeído", "Cetona", "Ácido carboxílico"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -OH em carbono secundário, caracterizando um álcool secundário."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["1-propanol", "2-propanol", "Metanol", "Etanol"],
+                    respostaCorreta: 1,
+                    explicacao: "O nome IUPAC é 2-propanol (álcool com OH no carbono 2 de uma cadeia de 3 carbonos)."
+                },
+                curiosidade: "O xx é usado como desinfetante e solvente industrial, sendo menos tóxico que o metanol."
+            },
+            // Composto 3: Butanona
+            {
+                imagem: "imagens_quiz2/quiz2-composto3.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Cetona", "Aldeído", "Álcool", "Éster"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo carbonila (C=O) entre carbonos 2 e 3, caracterizando uma cetona."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Butanona", "Butanal", "Pentanona", "Propanona"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Butan-2-ona, mas é aceito como Butanona (cetona com 4 carbonos)."
+                },
+                curiosidade: "A xx é um solvente industrial importante usado na produção de vernizes e adesivos."
+            },
+            // Composto 4: Éter dietílico
+            {
+                imagem: "imagens_quiz2/quiz2-composto4.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Éter", "Álcool", "Aldeído", "Cetona"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto é um éter simétrico com dois grupos etil ligados ao oxigênio."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Etoxietano", "Metoxietano", "Etoximetano", "Metoximetano"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Etoxietano (éter simétrico com dois grupos etil)."
+                },
+                curiosidade: "O xx foi o primeiro anestésico geral utilizado em cirurgias modernas."
+            },
+            // Composto 5: Butanal
+            {
+                imagem: "imagens_quiz2/quiz2-composto5.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Aldeído", "Cetona", "Álcool", "Ácido carboxílico"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -CHO terminal, característico dos aldeídos."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Butanal", "Propanal", "Pentanal", "Etanal"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Butanal (aldeído com 4 carbonos na cadeia principal)."
+                },
+                curiosidade: "O xx é usado na produção de resinas, plásticos e como intermediário em sínteses orgânicas."
+            },
+            // Composto 6: Ácido butírico
+            {
+                imagem: "imagens_quiz2/quiz2-composto6.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Ácido carboxílico", "Éster", "Aldeído", "Cetona"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -COOH terminal, característico dos ácidos carboxílicos."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Ácido butanoico", "Ácido propanoico", "Ácido pentanoico", "Ácido etanoico"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Ácido butanoico (ácido com 4 carbonos na cadeia principal)."
+                },
+                curiosidade: "O xx é responsável pelo odor característico da manteiga rançosa."
+            },
+            // Composto 7: Propionato de etila
+            {
+                imagem: "imagens_quiz2/quiz2-composto7.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Éster", "Ácido carboxílico", "Aldeído", "Cetona"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -COO-, formado pela reação entre ácido e álcool."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Propanoato de etila", "Etanoato de etila", "Butanoato de metila", "Metanoato de propila"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Propanoato de etila (éster do ácido propiônico com etanol)."
+                },
+                curiosidade: "O xx tem odor frutado e é usado como aromatizante artificial."
+            },
+            // Composto 8: Dietilamina
+            {
+                imagem: "imagens_quiz2/quiz2-composto8.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Amina", "Amida", "Álcool", "Aldeído"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui nitrogênio ligado a dois grupos alquila, caracterizando amina secundária."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Dietilamina", "Dimetilamina", "Etilamina", "Trietilamina"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é N-etiletanamina (amina secundária com dois grupos etil)."
+                },
+                curiosidade: "A xx é usada como catalisador e intermediário na produção de borracha e corantes."
+            },
+            // Composto 9: N-metilacetamida
+            {
+                imagem: "imagens_quiz2/quiz2-composto9.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Amida", "Amina", "Ácido carboxílico", "Éster"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -CONH- com substituinte no nitrogênio, caracterizando amida N-substituída."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["N-metiletanamida", "N-etilmetanamida", "N,N-dimetilmetanamida", "Acetamida"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é N-metiletanamida (amida do ácido acético com metilamina)."
+                },
+                curiosidade: "As amidas N-substituídas são importantes em peptídeos e proteínas com aminoácidos modificados."
+            },
+            // Composto 10: Anisol
+            {
+                imagem: "imagens_quiz2/quiz2-composto10.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Éter aromático", "Fenol", "Aldeído aromático", "Amina aromática"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo metoxi ligado a anel benzênico, caracterizando éter aromático."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Metoxibenzeno", "Etoxibenzeno", "Metilfenil éter", "Fenoximetano"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Metoxibenzeno (éter aromático com grupo metoxi)."
+                },
+                curiosidade: "O anisol tem odor agradável e é usado em perfumaria e como intermediário em síntese orgânica."
+            },
+            // Composto 11: Ciclopropano
+            {
+                imagem: "imagens_quiz2/quiz2-composto11.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Cicloalcano", "Alcano", "Alqueno", "Alcino"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto é um hidrocarboneto cíclico saturado com anel de 3 carbonos."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Ciclopropano", "Ciclobutano", "Ciclopentano", "Ciclohexano"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Ciclopropano (anel cíclico saturado de 3 carbonos)."
+                },
+                curiosidade: "O xx foi usado como anestésico, mas foi substituído por compostos menos explosivos."
+            },
+            // Composto 12: Ciclobutano
+            {
+                imagem: "imagens_quiz2/quiz2-composto12.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Cicloalcano", "Alcano", "Alqueno", "Aromático"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto é um hidrocarboneto cíclico saturado com anel de 4 carbonos."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Ciclobutano", "Ciclopropano", "Ciclopentano", "Ciclohexano"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Ciclobutano (anel cíclico saturado de 4 carbonos)."
+                },
+                curiosidade: "O xx possui tensão angular devido aos ângulos de 90° em vez dos 109,5° ideais."
+            },
+            // Composto 13: Ciclohexano
+            {
+                imagem: "imagens_quiz2/quiz2-composto13.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Cicloalcano", "Alcano", "Alqueno", "Aromático"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto é um hidrocarboneto cíclico saturado com anel de 6 carbonos."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Ciclohexano", "Ciclopentano", "Cicloheptano", "Ciclooctano"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Ciclohexano (anel cíclico saturado de 6 carbonos)."
+                },
+                curiosidade: "O xx adota principalmente a conformação de cadeira, que minimiza a tensão estereoquímica."
+            },
+            // Composto 14: Benzeno
+            {
+                imagem: "imagens_quiz2/quiz2-composto14.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Hidrocarboneto aromático", "Cicloalcano", "Alqueno", "Alcino"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto é um anel aromático plano com ressonância entre ligações duplas conjugadas."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Benzeno", "Ciclohexano", "Ciclohexeno", "Hexano"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Benzeno, o composto aromático mais simples e fundamental."
+                },
+                curiosidade: "O xx tem fórmula C6H6 e é a base de toda a química dos compostos aromáticos."
+            },
+            // Composto 15: Tolueno
+            {
+                imagem: "imagens_quiz2/quiz2-composto15.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Hidrocarboneto aromático", "Álcool aromático", "Aldeído aromático", "Cetona aromática"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto é um benzeno com um grupo metil como substituinte."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Metilbenzeno", "Etilbenzeno", "Propilbenzeno", "Dimetilbenzeno"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Metilbenzeno, mas é conhecido como tolueno."
+                },
+                curiosidade: "O tolueno é um solvente industrial importante e matéria-prima para produção de TNT."
+            },
+            // Composto 16: Etilbenzeno
+            {
+                imagem: "imagens_quiz2/quiz2-composto16.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Hidrocarboneto aromático", "Álcool", "Aldeído", "Cetona"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto é um benzeno com um grupo etil como substituinte."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Etilbenzeno", "Metilbenzeno", "Propilbenzeno", "Butilbenzeno"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Etilbenzeno (benzeno com grupo etil)."
+                },
+                curiosidade: "O xx é principalmente usado para produzir estireno, matéria-prima do poliestireno."
+            },
+            // Composto 17: Fenol
+            {
+                imagem: "imagens_quiz2/quiz2-composto17.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Fenol", "Álcool", "Éter", "Aldeído"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -OH diretamente ligado a anel aromático, caracterizando fenol."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Fenol", "Hidroxibenzeno", "Metilfenol", "Aminofenol"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Fenol (hidroxibenzeno)."
+                },
+                curiosidade: "O xx foi o primeiro antisséptico usado em cirurgias por Joseph Lister em 1867."
+            },
+            // Composto 18: Benzaldeído
+            {
+                imagem: "imagens_quiz2/quiz2-composto18.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Aldeído aromático", "Cetona aromática", "Ácido aromático", "Álcool aromático"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -CHO ligado a anel aromático, caracterizando aldeído aromático."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Benzaldeído", "Fenilmetanal", "Tolualdeído", "Ácido benzóico"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Benzaldeído (aldeído derivado do benzeno)."
+                },
+                curiosidade: "O xx tem odor característico de amêndoas e é usado em aromatizantes e perfumes."
+            },
+            // Composto 19: Ácido benzóico
+            {
+                imagem: "imagens_quiz2/quiz2-composto19.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Ácido carboxílico aromático", "Éster aromático", "Aldeído aromático", "Cetona aromática"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -COOH ligado a anel aromático, caracterizando ácido carboxílico aromático."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Ácido benzóico", "Ácido fenilcarboxílico", "Ácido benzoato", "Ácido salicílico"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Ácido benzóico (ácido carboxílico derivado do benzeno)."
+                },
+                curiosidade: "O xx e seus sais são usados como conservantes alimentares (E210-E213)."
+            },
+            // Composto 20: Anilina
+            {
+                imagem: "imagens_quiz2/quiz2-composto20.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Amina aromática", "Amida aromática", "Ácido aromático", "Éter aromático"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -NH2 ligado a anel aromático, caracterizando amina aromática primária."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Aminobenzeno", "Metilanilina", "Difenilamina", "N-metilanilina"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Aminobenzeno, mas é conhecido como anilina."
+                },
+                curiosidade: "A xx é a matéria-prima mais importante para a indústria de corantes sintéticos."
+            },
+            // Composto 21: Terc-butanol
+            {
+                imagem: "imagens_quiz2/quiz2-composto21.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Álcool", "Éter", "Aldeído", "Cetona"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -OH em carbono terciário, caracterizando álcool terciário."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["2-metil-2-propanol", "2-metil-1-propanol", "2-butanol", "1-butanol"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é 2-metil-2-propanol (álcool terciário com 4 carbonos)."
+                },
+                curiosidade: "O xx é usado como solvente e intermediário na produção de ésteres e éteres."
+            },
+            // Composto 22: Terc-pentanol
+            {
+                imagem: "imagens_quiz2/quiz2-composto22.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Álcool", "Éter", "Aldeído", "Cetona"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -OH em carbono terciário de cadeia com 5 carbonos."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["2-metil-2-butanol", "3-metil-2-butanol", "2-pentanol", "3-pentanol"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é 2-metil-2-butanol (álcool terciário com 5 carbonos)."
+                },
+                curiosidade: "O xx é usado em síntese orgânica e como solvente para resinas."
+            },
+            // Composto 23: N-etilacetamida
+            {
+                imagem: "imagens_quiz2/quiz2-composto23.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Amida", "Amina", "Ácido carboxílico", "Éster"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -CONH- com grupo etil no nitrogênio, caracterizando amida N-substituída."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["N-etiletanamida", "N-metiletanamida", "N,N-dietiletanamida", "Acetamida"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é N-etiletanamida (amida do ácido acético com etilamina)."
+                },
+                curiosidade: "Amidas N-substituídas são importantes em fármacos e produtos farmacêuticos."
+            },
+            // Composto 24: Isobutirato de etila
+            {
+                imagem: "imagens_quiz2/quiz2-composto24.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Éster", "Ácido carboxílico", "Aldeído", "Cetona"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -COO- formado por ácido isobutírico e etanol."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["2-metilpropanoato de etila", "Propanoato de etila", "Butanoato de etila", "Etanoato de isobutila"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é 2-metilpropanoato de etila (éster do ácido isobutírico com etanol)."
+                },
+                curiosidade: "O xx tem odor de framboesa e é usado como aromatizante alimentar."
+            },
+            // Composto 25: Ácido isobutírico
+            {
+                imagem: "imagens_quiz2/quiz2-composto25.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Ácido carboxílico", "Éster", "Aldeído", "Cetona"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -COOH em cadeia ramificada de 4 carbonos."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Ácido 2-metilpropanoico", "Ácido butanoico", "Ácido 3-metilbutanoico", "Ácido propanoico"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Ácido 2-metilpropanoico (ácido carboxílico ramificado com 4 carbonos)."
+                },
+                curiosidade: "O xx é encontrado em queijos e tem odor característico forte."
+            },
+            // Composto 26: Metil-isobutil-cetona
+            {
+                imagem: "imagens_quiz2/quiz2-composto26.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Cetona", "Aldeído", "Álcool", "Éter"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo carbonila (C=O) em posição 2 de cadeia ramificada de 6 carbonos."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["4-metilpentan-2-ona", "3-metilbutan-2-ona", "Pentan-2-ona", "Hexan-2-ona"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é 4-metilpentan-2-ona (cetona com 6 carbonos e ramificação metil)."
+                },
+                curiosidade: "Esta cetona é um solvente industrial importante para vernizes, tintas e adesivos."
+            },
+            // Composto 27: Isobutilamina
+            {
+                imagem: "imagens_quiz2/quiz2-composto27.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Amina", "Amida", "Álcool", "Aldeído"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui grupo -NH2 em carbono primário de cadeia ramificada."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["2-metil-1-propanamina", "1-butanamina", "2-butanamina", "3-metil-1-butanamina"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é 2-metil-1-propanamina (amina primária ramificada com 4 carbonos)."
+                },
+                curiosidade: "A xx é usada como intermediário na produção de agroquímicos e fármacos."
+            },
+            // Composto 28: Cloreto de terc-butila
+            {
+                imagem: "imagens_quiz2/quiz2-composto28.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Haloalcano", "Álcool", "Éter", "Aldeído"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui átomo de cloro ligado a carbono terciário, caracterizando haloalcano terciário."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["2-cloro-2-metilpropano", "1-cloro-2-metilpropano", "Clorobenzeno", "Clorometano"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é 2-cloro-2-metilpropano (haloalcano terciário com 4 carbonos)."
+                },
+                curiosidade: "O xx é importante em síntese orgânica como agente alquilante terciário."
+            },
+            // Composto 29: Naftaleno
+            {
+                imagem: "imagens_quiz2/quiz2-composto29.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Hidrocarboneto aromático policíclico", "Cicloalcano", "Alcano", "Alqueno"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto possui dois anéis benzênicos condensados (compartilhando dois carbonos)."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Naftaleno", "Antraceno", "Fenantreno", "Pireno"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Naftaleno (hidrocarboneto aromático com dois anéis fusionados)."
+                },
+                curiosidade: "O xx é usado como repelente de traças e como matéria-prima para corantes."
+            },
+            // Composto 30: Piperidina
+            {
+                imagem: "imagens_quiz2/quiz2-composto30.png",
+                pergunta: "Analise a estrutura química acima e responda:",
+                funcaoOrganica: {
+                    pergunta: "1. Qual é a função orgânica deste composto?",
+                    opcoes: ["Amina heterocíclica", "Amida cíclica", "Álcool cíclico", "Éter cíclico"],
+                    respostaCorreta: 0,
+                    explicacao: "O composto é um anel heterocíclico saturado de 6 membros contendo um átomo de nitrogênio."
+                },
+                nomeIUPAC: {
+                    pergunta: "2. Qual é o nome IUPAC deste composto?",
+                    opcoes: ["Piperidina", "Pirrolidina", "Piridina", "Morfolina"],
+                    respostaCorreta: 0,
+                    explicacao: "O nome IUPAC é Piperidina (amina heterocíclica saturada com anel de 6 membros)."
+                },
+                curiosidade: "A xx é encontrada naturalmente na pimenta-preta e é usada em síntese de fármacos."
+            }
+        ];
+
+        // Variáveis de estado do quiz
+        let compostoAtual = 0;
+        let perguntaAtual = 0; // 0 = função orgânica, 1 = nome IUPAC
+        let pontuacao = 0;
+        let respostasUsuario = Array(perguntas.length).fill().map(() => Array(2).fill(null));
+        let respostasCorretas = Array(perguntas.length).fill().map(() => Array(2).fill(false));
+        let quizIniciado = false;
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('totalQuestions').textContent = perguntas.length * 2;
+        });
+
+        function startQuiz() {
+            compostoAtual = 0;
+            perguntaAtual = 0;
+            pontuacao = 0;
+            respostasUsuario = Array(perguntas.length).fill().map(() => Array(2).fill(null));
+            respostasCorretas = Array(perguntas.length).fill().map(() => Array(2).fill(false));
+            quizIniciado = true;
+            
+            document.getElementById("welcomeScreen").classList.add("hidden");
+            document.getElementById("quizScreen").classList.remove("hidden");
+            document.getElementById("resultsScreen").classList.add("hidden");
+            
+            mostrarPergunta();
+        }
+
+        function getPerguntaAtual() {
+            const composto = perguntas[compostoAtual];
+            if (perguntaAtual === 0) {
+                return composto.funcaoOrganica;
+            } else {
+                return composto.nomeIUPAC;
+            }
+        }
+
+        function mostrarPergunta() {
+            if (!quizIniciado) return;
+            
+            const composto = perguntas[compostoAtual];
+            const pergunta = getPerguntaAtual();
+            
+            // Atualizar contador
+            const perguntaNumero = compostoAtual * 2 + perguntaAtual + 1;
+            document.getElementById("counter").textContent = `Pergunta ${perguntaNumero} de ${perguntas.length * 2}`;
+            
+            // Atualizar imagem da estrutura
+            document.getElementById("structureContainer").innerHTML = `
+                <img src="${composto.imagem}" alt="Estrutura química" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/cccccc/969696?text=Imagem+Não+Encontrada'">
+                <p><small>Estrutura molecular do composto</small></p>
+            `;
+            
+            // Atualizar texto da pergunta
+            document.getElementById("questionText").innerHTML = `
+                ${composto.pergunta}<br><br>
+                <strong>${pergunta.pergunta}</strong>
+            `;
+            
+            // Atualizar opções
+            let html = "";
+            for (let i = 0; i < pergunta.opcoes.length; i++) {
+                const letra = String.fromCharCode(65 + i);
+                const selecionada = respostasUsuario[compostoAtual][perguntaAtual] === i;
+                const classe = selecionada ? 'selected' : '';
+                
+                html += `
+                    <div class="option ${classe}" onclick="selecionarResposta(${i})">
+                        <span class="option-number">${letra}</span> ${pergunta.opcoes[i]}
+                    </div>
+                `;
+            }
+            document.getElementById("optionsContainer").innerHTML = html;
+            
+            // Atualizar progresso
+            const totalPerguntas = perguntas.length * 2;
+            const perguntasRespondidas = contarPerguntasRespondidas();
+            const progressoPercentual = (perguntasRespondidas / totalPerguntas) * 100;
+            
+            document.getElementById("progressText").textContent = 
+                `${perguntasRespondidas}/${totalPerguntas}`;
+            document.getElementById("progressFill").style.width = `${progressoPercentual}%`;
+            document.getElementById("score").textContent = pontuacao;
+            
+            // Atualizar estado dos botões
+            document.getElementById("prevButton").disabled = (compostoAtual === 0 && perguntaAtual === 0);
+            
+            // Mostrar botão de finalizar na última pergunta
+            if (compostoAtual === perguntas.length - 1 && perguntaAtual === 1) {
+                document.getElementById("nextButton").style.display = 'none';
+                document.getElementById("submitButton").style.display = 'inline-block';
+            } else {
+                document.getElementById("nextButton").style.display = 'inline-block';
+                document.getElementById("submitButton").style.display = 'none';
+            }
+            
+            // Esconder feedback
+            document.getElementById("feedback").classList.add("hidden");
+            document.getElementById("explanation").classList.add("hidden");
+            document.getElementById("funFact").classList.add("hidden");
+        }
+
+        function selecionarResposta(indice) {
+            const composto = perguntas[compostoAtual];
+            const pergunta = getPerguntaAtual();
+            
+            // Armazenar resposta do usuário
+            respostasUsuario[compostoAtual][perguntaAtual] = indice;
+            
+            // Verificar se está correta
+            const correta = (indice === pergunta.respostaCorreta);
+            respostasCorretas[compostoAtual][perguntaAtual] = correta;
+            
+            // Atualizar pontuação
+            if (correta) {
+                pontuacao++;
+            }
+            
+            // Mostrar feedback
+            const feedbackElement = document.getElementById("feedback");
+            const explanationElement = document.getElementById("explanation");
+            const funFactElement = document.getElementById("funFact");
+            
+            if (correta) {
+                feedbackElement.textContent = "✓ Resposta correta!";
+                feedbackElement.style.backgroundColor = "#d4edda";
+                feedbackElement.style.color = "#155724";
+                feedbackElement.style.border = "1px solid #c3e6cb";
+            } else {
+                feedbackElement.textContent = "✗ Resposta incorreta";
+                feedbackElement.style.backgroundColor = "#f8d7da";
+                feedbackElement.style.color = "#721c24";
+                feedbackElement.style.border = "1px solid #f5c6cb";
+            }
+            
+            explanationElement.textContent = pergunta.explicacao;
+            funFactElement.textContent = composto.curiosidade;
+            
+            feedbackElement.classList.remove("hidden");
+            explanationElement.classList.remove("hidden");
+            funFactElement.classList.remove("hidden");
+            
+            // Atualizar visual das opções
+            const options = document.getElementById("optionsContainer").getElementsByClassName("option");
+            for (let i = 0; i < options.length; i++) {
+                options[i].classList.remove('selected', 'correct', 'incorrect');
+                
+                if (i === indice) {
+                    options[i].classList.add('selected');
+                }
+                
+                if (i === pergunta.respostaCorreta) {
+                    options[i].classList.add('correct');
+                } else if (i === indice && i !== pergunta.respostaCorreta) {
+                    options[i].classList.add('incorrect');
+                }
+            }
+            
+            // Atualizar pontuação na tela
+            document.getElementById("score").textContent = pontuacao;
+        }
+
+        function nextQuestion() {
+            if (perguntaAtual < 1) {
+                perguntaAtual++;
+            } else if (compostoAtual < perguntas.length - 1) {
+                compostoAtual++;
+                perguntaAtual = 0;
+            }
+            mostrarPergunta();
+        }
+
+        function prevQuestion() {
+            if (perguntaAtual > 0) {
+                perguntaAtual--;
+            } else if (compostoAtual > 0) {
+                compostoAtual--;
+                perguntaAtual = 1;
+            }
+            mostrarPergunta();
+        }
+
+        function submitQuiz() {
+            document.getElementById("quizScreen").classList.add("hidden");
+            document.getElementById("resultsScreen").classList.remove("hidden");
+            
+            const totalPerguntas = perguntas.length * 2;
+            const percentual = (pontuacao / totalPerguntas) * 100;
+            
+            let mensagem, emoji;
+            if (percentual === 100) {
+                mensagem = "Perfeito! Você é um gênio da química orgânica! 🎓";
+                emoji = "🏆";
+            } else if (percentual >= 85) {
+                mensagem = "Excelente! Seu conhecimento em química orgânica é impressionante!";
+                emoji = "⭐";
+            } else if (percentual >= 70) {
+                mensagem = "Muito bom! Você tem um ótimo domínio da química orgânica!";
+                emoji = "👍";
+            } else if (percentual >= 50) {
+                mensagem = "Bom trabalho! Continue estudando para aprimorar seus conhecimentos!";
+                emoji = "📚";
+            } else {
+                mensagem = "Não desista! A química orgânica exige prática, continue estudando!";
+                emoji = "💪";
+            }
+            
+            document.getElementById("finalScore").innerHTML = `
+                ${emoji}<br>
+                ${mensagem}<br><br>
+                <span style="font-size: 28px;">Você acertou ${pontuacao} de ${totalPerguntas} questões</span><br>
+                <span style="font-size: 20px; color: #6a11cb;">(${percentual.toFixed(1)}% de acerto)</span>
+            `;
+            
+            mostrarResultadosDetalhados();
+        }
+
+        function mostrarResultadosDetalhados() {
+            let html = "<h3>Desempenho por Composto:</h3>";
+            
+            for (let i = 0; i < perguntas.length; i++) {
+                const composto = perguntas[i];
+                const acertos = respostasCorretas[i].filter(v => v).length;
+                const total = 2;
+                
+                html += `
+                    <div style="margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <strong>Composto ${i + 1}:</strong> ${acertos}/${total} acertos
+                        <div style="height: 8px; background: #e9ecef; border-radius: 4px; margin: 5px 0;">
+                            <div style="height: 100%; width: ${(acertos/total)*100}%; background: #${acertos === total ? '2ecc71' : acertos >= 1 ? 'f39c12' : 'e74c3c'}; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById("detailedResults").innerHTML = html;
+        }
+
+        function showAnswers() {
+            let html = "<h3>Respostas Corretas de Todos os Compostos:</h3>";
+            
+            for (let i = 0; i < perguntas.length; i++) {
+                const composto = perguntas[i];
+                html += `
+                    <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <strong>Composto ${i + 1}:</strong><br>
+                        <img src="${composto.imagem}" style="max-width: 150px; height: auto; margin: 10px 0;"><br>
+                        1. Função orgânica: ${composto.funcaoOrganica.opcoes[composto.funcaoOrganica.respostaCorreta]}<br>
+                        2. Nome IUPAC: ${composto.nomeIUPAC.opcoes[composto.nomeIUPAC.respostaCorreta]}
+                    </div>
+                `;
+            }
+            
+            document.getElementById("detailedResults").innerHTML = html;
+        }
+
+        function restartQuiz() {
+            compostoAtual = 0;
+            perguntaAtual = 0;
+            pontuacao = 0;
+            respostasUsuario = Array(perguntas.length).fill().map(() => Array(2).fill(null));
+            respostasCorretas = Array(perguntas.length).fill().map(() => Array(2).fill(false));
+            quizIniciado = true;
+            
+            document.getElementById("resultsScreen").classList.add("hidden");
+            document.getElementById("quizScreen").classList.remove("hidden");
+            
+            mostrarPergunta();
+        }
+
+        function contarPerguntasRespondidas() {
+            let contador = 0;
+            for (let i = 0; i < respostasUsuario.length; i++) {
+                for (let j = 0; j < respostasUsuario[i].length; j++) {
+                    if (respostasUsuario[i][j] !== null) {
+                        contador++;
+                    }
+                }
+            }
+            return contador;
+        }
+    </script>
+</body>
+</html>

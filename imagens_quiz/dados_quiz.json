@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "imagem": "composto1.png",
+    "funcoes": [
+      "Alcano"
+    ],
+    "cadeia_principal": 4,
+    "ramificacoes": 0,
+    "nome_iupac": "Butano"
+  },
+  {
+    "id": 2,
+    "imagem": "composto2.png",
+    "funcoes": [
+      "Alcano"
+    ],
+    "cadeia_principal": 3,
+    "ramificacoes": 1,
+    "nome_iupac": "2-metilpropano"
+  },
+  {
+    "id": 3,
+    "imagem": "composto3.png",
+    "funcoes": [
+      "Aldeído"
+    ],
+    "cadeia_principal": 2,
+    "ramificacoes": 0,
+    "nome_iupac": "Etanal"
+  },
+  {
+    "id": 4,
+    "imagem": "composto4.png",
+    "funcoes": [
+      "Ácido carboxílico"
+    ],
+    "cadeia_principal": 3,
+    "ramificacoes": 0,
+    "nome_iupac": "Ácido propanóico"
+  },
+  {
+    "id": 5,
+    "imagem": "composto5.png",
+    "funcoes": [
+      "Cetona"
+    ],
+    "cadeia_principal": 4,
+    "ramificacoes": 2,
+    "nome_iupac": "3-metilbutan-2-ona"
+  },
+  {
+    "id": 6,
+    "imagem": "composto6.png",
+    "funcoes": [
+      "Éter"
+    ],
+    "cadeia_principal": 2,
+    "ramificacoes": 0,
+    "nome_iupac": "Metoximetano"
+  },
+  {
+    "id": 7,
+    "imagem": "composto7.png",
+    "funcoes": [
+      "Hidrocarboneto aromático"
+    ],
+    "cadeia_principal": 6,
+    "ramificacoes": 0,
+    "nome_iupac": "Benzeno"
+  },
+  {
+    "id": 8,
+    "imagem": "composto8.png",
+    "funcoes": [
+      "Alcano"
+    ],
+    "cadeia_principal": 4,
+    "ramificacoes": 1,
+    "nome_iupac": "2-metilbutano"
+  },
+  {
+    "id": 9,
+    "imagem": "composto9.png",
+    "funcoes": [
+      "Éster"
+    ],
+    "cadeia_principal": 3,
+    "ramificacoes": 0,
+    "nome_iupac": "Acetato de metila"
+  },
+  {
+    "id": 10,
+    "imagem": "composto10.png",
+    "funcoes": [
+      "Amina"
+    ],
+    "cadeia_principal": 2,
+    "ramificacoes": 0,
+    "nome_iupac": "Etilamina"
+  }
+]
